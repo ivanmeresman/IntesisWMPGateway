@@ -43,9 +43,9 @@ local t2spStates = {
   	["HEAT SP"]= { arguments= { temperatureArgument("Temperature", "C", 22.0 ) } },
   	["COOL SP"]= { arguments= { temperatureArgument("Temperature", "C", 22.0 ) } },
   	["MODE"]= { arguments= { enumArgument("MODE", {  "Off", "Heat", "Cool", "Auto", "_Dry", "_Fan"  }, "Auto" ) } },
-    ["FAN AUTO"]= {},
-    ["_ONOFF"]= { arguments= { enumArgument("ON / OFF", {  true, false  }, false ) } },
-    ["_FANSP"]= { arguments= { enumArgument("Fan Speed", {  "Auto", "_High", "_Med", "_low", "_Quiet" }, "Auto" ) } },
+    	["FAN AUTO"]= {},
+    	["_ONOFF"]= { arguments= { enumArgument("ON / OFF", {  true, false  }, false ) } },
+    	["_FANSP"]= { arguments= { enumArgument("Fan Speed", {  "Auto", "_High", "_Med", "_low", "_Quiet" }, "Auto" ) } },
   	["_VANEUD"]= { arguments= { enumArgument("VANEUD", {  1, 2, 3, 4, 5, 6, "_SWING" }, 1 ) } },
   	["_VANELR"]= { arguments= { enumArgument("VANELR", {  1, 2, 3, 4, 5, "_SWING" }, 1 ) } },
   	["_SWING"]= { arguments= { enumArgument("SWING", {  "_UD", "_LR", "_UDLR", "Off" }, "Off" ) } }
@@ -53,7 +53,7 @@ local t2spStates = {
 
 resource_types= {
   ["Intesis Thermostat"]= { 
-  	standardResourceType= "THERMOSTAT_2SP",
+    standardResourceType= "THERMOSTAT_2SP",
     address= theAddress,
     events= t2spActions,
     commands= t2spActions,
