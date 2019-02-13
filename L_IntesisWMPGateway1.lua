@@ -7,9 +7,6 @@ Luckily Intesis have released their range of IntesisBox wifi gateways.  The Inte
 Specific IntesisBox’s are developed to communicate with the HVAC manufacturer’s proprietary communications protocol allowing for true real time bidirectional communication with the system. 
 Universal IntesisBox’s are developed to offer compatibility with thousands of HVAC models through infra red and offer room temperature feedback via a sensor in the IntesisBox.
 This IntesisBox driver for BLGW will work with all models of IntesisBox and will provide full two way control/feedback.
-
-Khimo support notes:
-  - Please don't put empty tables as commands or states
 ]]
 
 driver_channels={
@@ -88,22 +85,34 @@ function process()
     	return CONST.TIMEOUT
 	end
 	driver.setConnecting()
+    
+  --once the channel is online the process will read everything the intesis sends and display it on the Monitor with Trace()
+    if channel.status() then
+		driver.setOnline()
+	end
+	while channel.status() do
+		local msgError, msg = channel.readUntil("\r\n")
+		if msgError == CONST.OK then
+			Trace(msg)
+		end
+	end
+end
+
+function executeCommand(command, resource, commandArgs) 
+  --this function is called when ever you fire a command (you can test the commands response by fireing macros on the Macro window)
+  
+  Trace("*********About to execute " .. command, true)
+  
+  if command=="_SET_ONOFF" then
+    err = channel.write("SET,1:ONOFF,ON\r")--this should actually evaluate if the unit is on or off and change the state to the opposite
+    if err ~= CONST.OK then
+      Error("error! on execute command")
+    end
+  end
+  return CONST.OK
 end
 
 
-function onResourceDelete(resource)
-  Trace("Resource was deleted")
-end
-
-function onResourceUpdate(resource)
-  Trace("Resource was updated")
-  getState(resource)
-end
-
-function onResourceAdd(resource)
-  Trace("a resource was added")
-  getState(resource)
-end
 
 [[
 * The process is a global function responsible of control the message channel, receive and send states requests to mantain
